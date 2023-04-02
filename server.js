@@ -9,9 +9,17 @@ require("dotenv").config();
 const routes = require("./contollers");
 const sequelize = require('./config/connection');
 
+
+// Initialize handlebars for the html templates
+const hbs = exphbs.create({});
+
 // Initialize the server
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Set handlebars as the template engine for the server
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
 
 // Inform Express.js on which template engine to use
 app.use(express.json());
