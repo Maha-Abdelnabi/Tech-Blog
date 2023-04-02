@@ -1,6 +1,12 @@
 //dependinces
 const router = require("express").Router();
 const {User, Post, Comment } =  require("../../models");
+const session = require("express-session");
+// Authorization Helper
+const withAuth = require('../../utils/auth');
+// Sequelize store to save the session so the user can remain logged in
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+
 
 //routes
 //get all users
@@ -24,19 +30,40 @@ router.get('./:id', (req, res) => {
         // use id as the parameter for the request
         id: req.params.id,
       },
+      // include the posts the user has created, the posts the user has commented on, and the posts the user has upvoted
+      include: [
+        {
+          model: Post,
+          attributes: ["id", "title", "post_text", "created_at"],
+        },
+        {
+          model: Comment,
+          attributes: [
+            "id",
+            "comment_text",
+            "post_id",
+            "user_id",
+            "created_at",
+          ],
+          include: {
+            model: Post,
+            attributes: ["title"],
+          },
+        },
+      ],
     })
-    .then(dbUserData => {
-      if (!dbUserData) {
-        res.status(400).json({ message: "can't find a yser with thid id" });
-        return;
-      }
-      // if no user is found, return an error, otherwise, return the data for the requested user
-      res.json(dbUserData);
-    })
-    .catch(err =>{
+      .then((dbUserData) => {
+        if (!dbUserData) {
+          res.status(400).json({ message: "can't find a yser with thid id" });
+          return;
+        }
+        // if no user is found, return an error, otherwise, return the data for the requested user
+        res.json(dbUserData);
+      })
+      .catch((err) => {
         console.log(err);
-        res.status(500).json(err)
-    })
+        res.status(500).json(err);
+      });
  
 })
 
