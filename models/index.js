@@ -5,7 +5,7 @@ const User = require("./User");
 // Post model
 const Post = require("./Post");
 // Comment model
-const Comment = require("./Comment");
+const Comment = require("./comment");
 
 // Create associations between the models
 // User-Post relationship

@@ -1,4 +1,4 @@
-/ Post model
+// Post model
 
 // Dependencies
 // sequelize model, datatypes, and database connection

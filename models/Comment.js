@@ -1,12 +1,14 @@
 // Comment model
 
 // Dependencies
+// sequelize model, datatypes, and database connection
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/connection");
 
-
+// the Comment model extends the sequelize model
 class Comment extends Model {}
 
+// define the table columns and configuration, similar to the setup for the other models
 Comment.init(
   {
     id: {
@@ -19,6 +21,7 @@ Comment.init(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
+        // comment must be at least one character long
         len: [1],
       },
     },
@@ -45,5 +48,5 @@ Comment.init(
   }
 );
 
-// Export the model
+
 module.exports = Comment;
