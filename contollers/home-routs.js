@@ -29,7 +29,7 @@ router.get("/", (req, res) => {
       // create an array for the posts, using the get method to trim extra sequelize object data out
       const posts = dbPostData.map((post) => post.get({ plain: true }));
       // pass the posts into the homepage template
-      res.render("homepage", {posts});
+      res.render("homepage", {posts, loggedIn: req.session.loggedIn});
     })
   
     .catch(err => {

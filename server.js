@@ -10,10 +10,11 @@ require("dotenv").config();
 //i need to require sequlize, routes
 const routes = require("./contollers");
 const sequelize = require('./config/connection');
-
+// Handlebars helpers
+const helpers = require('./utils/helpers');
 
 // Initialize handlebars for the html templates
-const hbs = exphbs.create({});
+const hbs = exphbs.create({helpers});
 
 // Initialize sessions
 const sess = {

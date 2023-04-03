@@ -15,6 +15,8 @@ User.hasMany(Post, {
 //Post-User relationship
 Post.belongsTo(User, {
   foreignKey: "user_id",
+  onDelete: "cascade",
+  hooks: true,
 });
 
 // Comment-User relationship
@@ -25,16 +27,22 @@ Comment.belongsTo(User, {
 // Comment-Post relationship
 Comment.belongsTo(Post, {
   foreignKey: "post_id",
+  onDelete: "cascade",
+  hooks: true,
 });
 
 // User-Comment relationsihp
 User.hasMany(Comment, {
   foreignKey: "user_id",
+  onDelete: "cascade",
+  hooks: true,
 });
 
 // Post-Comment relationship
 Post.hasMany(Comment, {
   foreignKey: "post_id",
+  onDelete: "cascade",
+  hooks: true,
 });
 
 // Export the modules
