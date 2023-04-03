@@ -76,8 +76,14 @@ router.post('/', (req, res)=>{
     })
     //send the data back
     .then(dbUserData =>{
+       req.session.save(() => {
+        req.session.user_id = dbUserData.id;
+        req.session.username = dbUserData.username;
+        req.session.loggedIn = true;
+
         res.json(dbUserData);
-    })
+    });
+  })
     .catch(err =>{
         console.log(err);
         res.status(500).json(err);
@@ -97,11 +103,18 @@ router.post('/login', (req,res) =>{
       res.status(400).json({ message: "Can't find this email" });
       return;
     }
+      // otherwise, save the session, and return the user object and a success message
+        req.session.save(() => {
+          // declare session variables
+          req.session.user_id = dbUserData.id;
+          req.session.username = dbUserData.username;
+          req.session.loggedIn = true;
     // otherwise return the user object 
     res.json({user: dbUserData, message: 'You are now logged in'});
 
   })
 }) 
+});
 
 //post..logout an existing user
 router.post('/logout', (req,res) =>{
