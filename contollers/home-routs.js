@@ -18,12 +18,12 @@ router.get("/", (req, res) => {
         attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
         include: {
           model: User,
-          attributes: ["username"],
-        },
-      },
-    ],
+          attributes: ["username"]
+        }
+      }
+    ]
   })
-})
+
     // render the posts
     .then((dbPostData) => {
       // create an array for the posts, using the get method to trim extra sequelize object data out
@@ -31,6 +31,16 @@ router.get("/", (req, res) => {
       // pass the posts into the homepage template
       res.render("homepage", {posts});
     })
+  
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+
+  });
+
+
+
     // Render the single post page
 router.get('/post/:id', (req, res) => {
     Post.findOne({
@@ -77,6 +87,10 @@ router.get('/post/:id', (req, res) => {
       res.status(500).json(err);
     });
 });
+// Render the login page
+router.get('/login', (req, res) => {
+    res.render('login');
+  });
 
 
 module.exports = router;
