@@ -6,8 +6,6 @@ const { Post, User, Comment } = require("../models");
 router.get("/", (req, res) => {
   Post.findAll({
     attributes: ["id", "post_text", "title", "created_at"],
-    // Order the posts from most recent to least
-    order: [["created_at", "DESC"]],
     // From the User table, include the post creator's user name
     include: [
       {
@@ -25,6 +23,7 @@ router.get("/", (req, res) => {
       },
     ],
   })
+})
     // render the posts
     .then((dbPostData) => {
       // create an array for the posts, using the get method to trim extra sequelize object data out
@@ -32,6 +31,46 @@ router.get("/", (req, res) => {
       // pass the posts into the homepage template
       res.render("homepage", {posts});
     })
+    // Render the single post page
+router.get('/post/:id', (req, res) => {
+    Post.findOne({
+      where: {
+        // specify the post id parameter in the query
+        id: req.params.id
+      },
+      // Query configuration, as with the get all posts route
+      attributes: [
+        'id',
+        'post_text',
+        'title',
+        'created_at',
+      ],
+      include: [
+        {
+          model: User,
+          attributes: ['username']
+        },
+        {
+            model: Comment,
+            attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+            include: {
+                model: User,
+                attributes: ['username']
+            }
+        }
+      ]
+    })
+      .then(dbPostData => {
+        // if no post by that id exists, return an error
+        if (!dbPostData) {
+          res.status(404).json({ message: 'No post found with this id' });
+          return;
+        }
+        // serialize the post data, removing extra sequelize meta data
+        const post = dbPostData.get({ plain: true });
+        // pass the posts into the homepage template
+        res.render('single-post', {post});
+      })
     // if there was a server error, return the error
     .catch((err) => {
       console.log(err);

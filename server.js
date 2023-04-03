@@ -29,5 +29,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(routes);
 
 sequelize.sync({ force: false }).then(() => {
-  console.log(`Now listening to ${PORT}!`);
+  app.listen(PORT, () => console.log("Now listening"));
 });
+
