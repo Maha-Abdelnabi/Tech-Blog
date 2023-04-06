@@ -6,6 +6,9 @@
 
  [Click here to visit the live deployed site](https://new-mvc-tech-blog.herokuapp.com/)!
 
+
+![screen shot of the project](.//public/assets/mvc.PNG)
+
  ## Description
  Tech Blog is an application uses the Model-View-Controller (MVC) paradigm to create a blog-style website where developers can create an account, edit their information, make posts, edit posts, and comment on other user's posts.
  Built using MySQL2, Express, Sequelize, Handlebars and dotenv.
